@@ -3,7 +3,7 @@ services:
   - type: web
     name: air-gesturer
     runtime: static
-    buildCommand: ""
+    buildCommand: echo "Static site, nothing to build"
     staticPublishPath: ./web
     headers:
       - path: /*
