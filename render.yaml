@@ -1,10 +1,13 @@
 # Render Blueprint: hosts the browser version (web/) as a free static site.
+# rootDir keeps Render inside web/, so it never sees the desktop app's
+# requirements.txt and doesn't try to install Python packages.
 services:
   - type: web
     name: air-gesturer
     runtime: static
+    rootDir: web
     buildCommand: echo "Static site, nothing to build"
-    staticPublishPath: ./web
+    staticPublishPath: .
     headers:
       - path: /*
         name: Permissions-Policy

@@ -99,8 +99,9 @@ python3 -m http.server 8000 --directory web
 
 `render.yaml` describes a free **Static Site** that publishes the `web/` folder.
 On [render.com](https://render.com): **New → Blueprint**, connect this repository,
-and apply. Or **New → Static Site** with *Publish directory* `web` and the
-build command `echo ok` (Render needs one, even though nothing is built).
+and apply. Or **New → Static Site** with *Root directory* `web`, *Publish directory*
+`.` and the build command `echo ok` (Render needs one, even though nothing is built).
+Keeping the root at `web/` stops Render from installing the desktop app's Python packages.
 
 ## Files
 
