@@ -1,0 +1,46 @@
+# Air Scroll gesture configuration.
+# Distances are in "palm units" (wrist to middle knuckle), so gestures feel the
+# same near or far from the camera. Pass another file with --config.
+
+[camera]
+fixed_framerate = true # keep full fps in dim light (lower latency, darker image)
+
+[tracking]
+confirm_frames = 2     # frames a new pose must last; lower = faster, more flicker
+
+[scroll]               # point with the index finger and move it
+step = 0.08            # finger travel per wheel tick; smaller = faster
+deadzone = 0.006       # per-frame jitter that is ignored
+horizontal = true      # left/right pointing motion scrolls sideways
+invert = false         # true = "natural" scrolling (finger down scrolls up)
+max_ticks = 6          # cap on wheel ticks per frame for fast flicks
+
+[swipe]                # quick open-palm swipe
+distance = 0.55        # travel needed for a swipe; lower = earlier, more misfires
+window = 0.5           # seconds the travel must happen within
+cooldown = 0.8         # seconds before the next swipe can fire
+
+[two_finger]           # index + middle up, move hand up/down
+step = 0.15            # travel per step
+
+[ok_sign]              # thumb + index tips touch, other fingers up
+hold = 0.8             # seconds to hold it before the action fires
+
+[pause]
+hold = 4.0             # seconds to hold a fist to pause / resume; 0 = off
+
+# Actions: "hypr:<dispatch>", "key:<mods+Key>", "cmd:<shell>", or "".
+# hypr: text is passed to `hyprctl dispatch`; Lua configs use hl.dsp.* calls.
+# Directions are as you see your hand in the mirrored preview.
+[actions]
+# Pointing finger moved down/up: these replace wheel scrolling when set,
+# firing once per scroll step. Set to "" to scroll with the wheel instead.
+point_down  = "key:Down"
+point_up    = "key:Up"
+swipe_left  = 'hypr:hl.dsp.focus({ workspace = "e+1" })'
+swipe_right = 'hypr:hl.dsp.focus({ workspace = "e-1" })'
+swipe_up    = ""                      # e.g. 'hypr:hl.dsp.window.fullscreen({ mode = "maximized" })'
+swipe_down  = ""                      # e.g. "key:super+w" (close window)
+ok_sign     = "hypr:hl.dsp.window.close()"   # close the active window
+two_up      = "cmd:wpctl set-volume -l 1.0 @DEFAULT_AUDIO_SINK@ 5%+"
+two_down    = "cmd:wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"

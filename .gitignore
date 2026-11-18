@@ -1,0 +1,19 @@
+# Python
+.venv/
+__pycache__/
+*.pyc
+
+# generated / local only
+logs/
+docs/
+*.zip
+.claude/
+layout_check.png
+
+# helper scripts not part of the submission
+CLAUDE_HANDOFF.md
+build_docs.py
+record_demo.sh
+demo_config.toml
+install-plugin.sh
+omarchy-plugin/

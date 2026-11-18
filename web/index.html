@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Air Gesturer</title>
+  <meta name="description" content="Control a web page with hand gestures using your webcam. Runs entirely in your browser.">
+  <meta name="theme-color" content="#1F2FD8">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%231F2FD8'/><circle cx='16' cy='9' r='3.2' fill='%23FFC531'/><circle cx='16' cy='24' r='3.2' fill='%23FFC531'/><path d='M16 9v15' stroke='white' stroke-width='2.4'/></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="hero">
+    <nav class="bar">
+      <a class="wordmark" href="#">Air Gesturer</a>
+      <div class="links">
+        <a href="#how">How it works</a>
+        <a href="#desktop">Desktop app</a>
+      </div>
+    </nav>
+
+    <div class="intro">
+      <h1>Your hand is the mouse.</h1>
+      <p class="lede">Point to scroll, swipe to turn the page, hold a fist to pause. It runs in this tab
+      with your webcam, and no video ever leaves your device.</p>
+    </div>
+
+    <section class="studio" aria-label="Live demo">
+      <div class="cam">
+        <div class="stage">
+          <video id="video" playsinline muted></video>
+          <canvas id="overlay"></canvas>
+          <div id="idle" class="idle">
+            <div class="ghost" id="ghost"></div>
+            <button id="start" class="btn-start">Start camera</button>
+            <p id="idle-note">Your browser will ask for camera access.</p>
+          </div>
+          <div id="hold" class="hold"><span></span></div>
+          <div id="flash" class="flash" aria-live="polite"></div>
+        </div>
+
+        <div class="status">
+          <div>
+            <strong id="pose">Camera off</strong>
+            <span id="hint">Start the camera, then raise one hand 40–80 cm away.</span>
+          </div>
+          <div class="status-actions">
+            <span id="fps" class="fps"></span>
+            <button id="pause" class="btn-ghost" disabled>Pause</button>
+            <button id="stop" class="btn-ghost" disabled>Stop</button>
+          </div>
+        </div>
+
+        <ul class="legend" id="legend" aria-label="Gestures">
+          <li data-pose="point"><i></i><b>Point</b><span>Scroll</span></li>
+          <li data-pose="palm"><i></i><b>Swipe</b><span>Turn page</span></li>
+          <li data-pose="two"><i></i><b>Two fingers</b><span>Volume</span></li>
+          <li data-pose="ok"><i></i><b>OK, hold</b><span>Dismiss</span></li>
+          <li data-pose="fist"><i></i><b>Fist, hold</b><span>Pause</span></li>
+        </ul>
+      </div>
+
+      <div class="sheet">
+        <div class="tabs" id="tabs" role="tablist"></div>
+
+        <div id="notice" class="notice" role="status">
+          <b id="notice-title">One new message</b>
+          <span id="notice-text">Make an OK sign and hold it to dismiss this.</span>
+        </div>
+
+        <div class="pages" id="pages">
+          <article class="page" data-title="Start here">
+            <h2>Start here</h2>
+            <p>Everything on this sheet is controlled by your hand. Each gesture in the
+            row on the left lights up the first time you use it. Try all five.</p>
+            <p>Keep the hand you're using in view, with your palm facing the camera.
+            To stop a gesture, lower your hand or change pose, the way you lift a finger
+            off a touchpad.</p>
+            <h3>Scroll this page</h3>
+            <p>Raise only your index finger and move it down slowly. The sheet follows.
+            Move it up to come back. Small shakes are ignored, so the page only moves
+            when you mean it to.</p>
+            <div class="ruler" aria-hidden="true"></div>
+            <p class="end">You scrolled to the bottom. Now swipe an open palm to the left
+            to turn the page.</p>
+          </article>
+
+          <article class="page" data-title="Tracking">
+            <h2>How it reads your hand</h2>
+            <p>The tracker finds 21 points on your hand in every frame: the wrist, the
+            knuckles and each joint of every finger.</p>
+            <p>A finger counts as raised when its tip is clearly farther from the wrist than
+            its middle joint. The pattern of raised fingers gives the pose: one finger is a
+            point, two is a peace sign, all four is an open palm, none is a fist.</p>
+            <p>Movement is measured in palm widths rather than pixels, so the same gesture
+            works whether your hand is close to the camera or across the room.</p>
+            <h3>Why the delay?</h3>
+            <p>A new pose has to hold for two frames before it counts. That stops a hand
+            passing through a pose on its way to another from triggering anything.</p>
+            <div class="ruler" aria-hidden="true"></div>
+            <p class="end">Swipe left again for the next page, or right to go back.</p>
+          </article>
+
+          <article class="page" data-title="Gestures">
+            <h2>The five gestures</h2>
+            <dl class="defs">
+              <dt>Point</dt><dd>Index finger up, the rest curled. Move up or down to scroll.</dd>
+              <dt>Swipe</dt><dd>All fingers open. A quick sweep left or right turns the page.</dd>
+              <dt>Two fingers</dt><dd>Index and middle up. Raise or lower your hand to change the volume.</dd>
+              <dt>OK sign</dt><dd>Thumb tip touching the index tip. Hold it for a moment to dismiss a message.</dd>
+              <dt>Fist</dt><dd>Hold it for two seconds to pause every gesture. Hold it again to resume.</dd>
+            </dl>
+            <div class="ruler" aria-hidden="true"></div>
+            <p class="end">One more page to the left.</p>
+          </article>
+
+          <article class="page" data-title="Privacy">
+            <h2>Your camera stays yours</h2>
+            <p>The hand tracker runs inside this browser tab. Frames from your camera are
+            analysed in memory and thrown away; none are uploaded, saved or sent to a server.</p>
+            <p>The site only delivers the page and the tracking model. Close the tab or press
+            Stop, and the camera turns off.</p>
+            <div class="ruler" aria-hidden="true"></div>
+            <p class="end">That's the whole sheet. Swipe right to go back.</p>
+          </article>
+        </div>
+
+        <div class="sheet-foot">
+          <span>Volume</span>
+          <div class="vol-track"><div id="vol-fill"></div></div>
+          <output id="vol-num">50</output>
+        </div>
+      </div>
+    </section>
+  </header>
+
+  <main>
+    <section id="how" class="how">
+      <h2>How it works</h2>
+      <ol>
+        <li><b>Capture.</b> The browser reads your webcam and mirrors it like a selfie.</li>
+        <li><b>Detect.</b> Google's MediaPipe hand model finds 21 landmarks per frame.</li>
+        <li><b>Scale.</b> Motion is divided by the size of your palm, so distance doesn't matter.</li>
+        <li><b>Classify.</b> Which fingers are raised decides the pose.</li>
+        <li><b>Settle.</b> A new pose must hold for two frames before it counts.</li>
+        <li><b>Track.</b> Small state machines turn motion into scrolls, swipes, steps and holds.</li>
+        <li><b>Act.</b> The page scrolls, turns, changes volume, dismisses or pauses.</li>
+      </ol>
+    </section>
+
+    <section id="desktop" class="desktop">
+      <div class="desktop-text">
+        <h2>It started on the desktop</h2>
+        <p>Air Gesturer is a Python application first. The desktop version uses OpenCV,
+        MediaPipe and Tkinter to control the whole computer: it scrolls any window, switches
+        workspaces, changes the system volume and closes windows.</p>
+        <p>This page runs the same gesture logic, translated from Python to JavaScript and
+        checked against the original on 3,000 recorded hand positions.</p>
+        <pre><code>pip install -r requirements.txt
+python air_gesture_app.py</code></pre>
+      </div>
+      <figure>
+        <img src="assets/desktop_app.png" alt="The Air Gesture Controller desktop app with its camera panel, status, controls and gesture guide" loading="lazy" width="1240" height="760">
+        <figcaption>The desktop app, before the camera is started.</figcaption>
+      </figure>
+    </section>
+  </main>
+
+  <footer>Air Gesturer, a Python application development project.</footer>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>

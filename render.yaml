@@ -1,0 +1,11 @@
+# Render Blueprint: hosts the browser version (web/) as a free static site.
+services:
+  - type: web
+    name: air-gesturer
+    runtime: static
+    buildCommand: ""
+    staticPublishPath: ./web
+    headers:
+      - path: /*
+        name: Permissions-Policy
+        value: camera=(self)
